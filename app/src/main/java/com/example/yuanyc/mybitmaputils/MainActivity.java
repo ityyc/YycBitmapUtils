@@ -1,13 +1,20 @@
 package com.example.yuanyc.mybitmaputils;
 
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import java.io.ByteArrayOutputStream;
 
 import annotation.ContentView;
 import annotation.OnClick;
 import annotation.ViewInject;
+import bitmapUtils.MyBitmapUtils;
 
 @ContentView(value = R.layout.activity_main)
 public class MainActivity extends BaseActivity {
@@ -28,17 +35,26 @@ public class MainActivity extends BaseActivity {
     @ViewInject(R.id.button8)
     private Button button8;
 
+    @ViewInject(R.id.image1)
+    private ImageView imageView1;
+    private Resources resources;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        resources = getResources();
     }
 
     @OnClick({R.id.button1, R.id.button2, R.id.button3, R.id.button4, R.id.button5, R.id.button6, R.id.button7, R.id.button8})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button1:
-                System.out.println("button1执行");
                 Toast.makeText(MainActivity.this,"button1被点击",Toast.LENGTH_SHORT).show();
+                Bitmap bitmap = BitmapFactory.decodeResource(resources, R.mipmap.ic_pay_bank);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                Bitmap bitmap1 = MyBitmapUtils.compressBitmapByHeight(baos.toByteArray(), imageView1.getHeight());
+                imageView1.setImageBitmap(bitmap1);
                 break;
             case R.id.button2:
                 break;
