@@ -85,8 +85,11 @@ public class ViewInjectUtils {
             Annotation[] annotations = method.getAnnotations();
             //遍历注解
             for (Annotation annotation : annotations) {
+                System.out.println("method:---->"+method);
+                System.out.println("annotation:---->"+annotation);
                 //拿到注解的类型
                 Class<? extends Annotation> annotationType = annotation.annotationType();
+                System.out.println("annotationType"+annotationType);
                 //获取定义在注解上的指定注解
                 BaseEvent baseEvent = annotationType.getAnnotation(BaseEvent.class);
                 if (null != baseEvent) {
@@ -101,10 +104,6 @@ public class ViewInjectUtils {
                         int[] viewIds = (int[]) declaredMethod.invoke(annotation, null);
                         //通过InvocationHandler设置代理
                         DynamicHandler dynamicHandler = new DynamicHandler(activity);
-                        //methodName = OnClick method = onClick
-                        //打印添加的方法名和方法
-                        System.out.println("methodName" + methodName);
-                        System.out.println("method.getName()" + method.getName());
                         dynamicHandler.addMethod(methodName, method);
                         Object listener = Proxy.newProxyInstance(listenerType.getClassLoader(), new Class<?>[]{listenerType}, dynamicHandler);
                         //遍历所有的View，设置事件
