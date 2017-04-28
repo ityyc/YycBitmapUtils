@@ -18,6 +18,6 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         System.out.println("BaseActivity执行！");
         //初始化注解处理器
-        ViewInjectUtils.inject(this);
+        ViewInjectUtils.inject(BaseActivity.this);
     }
 }

@@ -3,8 +3,6 @@ package annotation;
 import android.app.Activity;
 import android.view.View;
 
-import com.example.yuanyc.mybitmaputils.R;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -26,14 +24,12 @@ public class ViewInjectUtils {
      * @param activity
      */
     public static void inject(Activity activity) {
-        System.out.println("inject执行！");
         injectContentView(activity);
         injectViews(activity);
         injectEvent(activity);
     }
 
     private static void injectContentView(Activity activity) {
-        System.out.println("injectContentView执行！");
         Class<? extends Activity> aClass = activity.getClass();
         //查询类上是否存在ContentView注解
         ContentView contentView = aClass.getAnnotation(ContentView.class);
@@ -53,7 +49,6 @@ public class ViewInjectUtils {
     }
 
     private static void injectViews(Activity activity) {
-        System.out.println("injectViews执行！");
         Class<? extends Activity> aClass = activity.getClass();
         //获取类中所有字段
         Field[] fields = aClass.getDeclaredFields();
@@ -68,7 +63,6 @@ public class ViewInjectUtils {
                     //如果不等于-1
                     try {
                         Method method = aClass.getMethod(METHOD_FIND_VIEW_BY_ID, int.class);
-                        method.setAccessible(true);
                         Object invoke = method.invoke(activity, value);
                         field.setAccessible(true);
                         field.set(activity, invoke);
@@ -82,7 +76,6 @@ public class ViewInjectUtils {
     }
 
     private static void injectEvent(Activity activity) {
-        System.out.println("injectEvent执行！");
         Class<? extends Activity> aClass = activity.getClass();
         //拿到类中所有方法
         Method[] methods = aClass.getMethods();
@@ -108,6 +101,10 @@ public class ViewInjectUtils {
                         int[] viewIds = (int[]) declaredMethod.invoke(annotation, null);
                         //通过InvocationHandler设置代理
                         DynamicHandler dynamicHandler = new DynamicHandler(activity);
+                        //methodName = OnClick method = onClick
+                        //打印添加的方法名和方法
+                        System.out.println("methodName" + methodName);
+                        System.out.println("method.getName()" + method.getName());
                         dynamicHandler.addMethod(methodName, method);
                         Object listener = Proxy.newProxyInstance(listenerType.getClassLoader(), new Class<?>[]{listenerType}, dynamicHandler);
                         //遍历所有的View，设置事件
@@ -122,8 +119,6 @@ public class ViewInjectUtils {
                 }
             }
         }
-
-
     }
 
 }

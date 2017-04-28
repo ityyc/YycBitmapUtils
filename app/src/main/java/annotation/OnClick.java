@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@BaseEvent(listenerType = View.OnClickListener.class,listenerSetter = "setOnClickListener",methodName = "OnClick")
+@BaseEvent(listenerType = View.OnClickListener.class, listenerSetter = "setOnClickListener", methodName = "onClick")
 public @interface OnClick {
     int[] value();
 }

@@ -13,17 +13,9 @@ import java.util.HashMap;
 
 public class DynamicHandler implements InvocationHandler {
     private WeakReference<Object> handlerRef;
-    private final HashMap<String, Method> methodMap = new HashMap<String, Method>();
+    private final HashMap<String, Method> methodMap = new HashMap<String, Method>(1);
 
     public DynamicHandler(Object handler) {
-        this.handlerRef = new WeakReference<Object>(handler);
-    }
-
-    public Object getHandlerRef() {
-        return handlerRef.get();
-    }
-
-    public void setHandlerRef(Object handler) {
         this.handlerRef = new WeakReference<Object>(handler);
     }
 
@@ -31,14 +23,25 @@ public class DynamicHandler implements InvocationHandler {
         methodMap.put(name, method);
     }
 
+    public Object getHandler() {
+        return handlerRef.get();
+    }
+
+    public void setHandler(Object handler) {
+        this.handlerRef = new WeakReference<Object>(handler);
+    }
+
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         Object handler = handlerRef.get();
-        if (null != handler) {
-            String name = method.getName();
-            Method method1 = methodMap.get(name);
-            if (null != method1) {
-                return method1.invoke(handler, args);
+        if (handler != null) {
+            String methodName = method.getName();
+            method = methodMap.get(methodName);
+            System.out.println("从methodMap取value的key值" + methodName);
+            System.out.println("从methodMap取出的method" + method);
+            System.out.println("从methodMap取出的method的名字" + method.getName());
+            if (method != null) {
+                return method.invoke(handler, args);
             }
         }
         return null;

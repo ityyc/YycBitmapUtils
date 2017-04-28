@@ -1,7 +1,6 @@
 package com.example.yuanyc.mybitmaputils;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -12,7 +11,6 @@ import annotation.ViewInject;
 
 @ContentView(value = R.layout.activity_main)
 public class MainActivity extends BaseActivity {
-    private static final String TAG = "MainActivity";
     @ViewInject(R.id.button1)
     private Button button1;
     @ViewInject(R.id.button2)
@@ -33,16 +31,13 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println("MainActivity执行！");
     }
 
     @OnClick({R.id.button1, R.id.button2, R.id.button3, R.id.button4, R.id.button5, R.id.button6, R.id.button7, R.id.button8})
     public void onClick(View view) {
-        System.out.println("onClick执行！");
         switch (view.getId()) {
             case R.id.button1:
-                Log.i(TAG,"button1被点击");
-                System.out.println("button1被点击");
+                System.out.println("button1执行");
                 Toast.makeText(MainActivity.this,"button1被点击",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.button2:
