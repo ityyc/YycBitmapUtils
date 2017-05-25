@@ -42,6 +42,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        GlobalUtils.getInstance().setMainActivity(this);
         resources = getResources();
     }
 
@@ -57,8 +58,14 @@ public class MainActivity extends BaseActivity {
                 imageView1.setImageBitmap(bitmap1);
                 break;
             case R.id.button2:
+                Toast.makeText(MainActivity.this,"button2被点击",Toast.LENGTH_SHORT).show();
+                Bitmap bitmap2 = MyBitmapUtils.compressBitmap(R.mipmap.test_01);
+                imageView1.setImageBitmap(bitmap2);
                 break;
             case R.id.button3:
+                Toast.makeText(MainActivity.this,"button3被点击",Toast.LENGTH_SHORT).show();
+                Bitmap bitmap3 = MyBitmapUtils.compressLossBitmap(BitmapFactory.decodeResource(resources, R.mipmap.test_01), 30);
+                imageView1.setImageBitmap(bitmap3);
                 break;
             case R.id.button4:
                 break;

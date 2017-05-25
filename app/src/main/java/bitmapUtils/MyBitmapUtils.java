@@ -1,8 +1,13 @@
 package bitmapUtils;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+
+import com.example.yuanyc.mybitmaputils.GlobalUtils;
+
+import java.io.ByteArrayOutputStream;
 
 /**
  * Author ：yuanyc
@@ -74,6 +79,36 @@ public class MyBitmapUtils {
             bitmap.recycle();
         }
         return newBitmap;
+    }
+
+    /**
+     * 压缩图片,通过采样率进行压缩
+     *
+     * @param id 资源的id
+     * @return
+     */
+    public static Bitmap compressBitmap(int id) {
+        Resources resources = GlobalUtils.getInstance().getMainActivity().getResources();
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        BitmapFactory.decodeResource(resources, id, options);
+        options.inJustDecodeBounds = true;
+        options.inSampleSize = 4;
+        options.inJustDecodeBounds = false;
+        Bitmap bitmap = BitmapFactory.decodeResource(resources, id, options);
+        return bitmap;
+    }
+
+    /**
+     *
+     * @param bitmap 要压缩的bitmap
+     * @param quality 质量 0-100,100表示原图
+     * @return
+     */
+    public static Bitmap compressLossBitmap(Bitmap bitmap,int quality){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG,quality,baos);
+        System.out.println("压缩之后大小："+baos.toByteArray().length);
+        return BitmapFactory.decodeByteArray(baos.toByteArray(),0,baos.toByteArray().length);
     }
 
 }
